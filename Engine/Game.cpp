@@ -39,6 +39,14 @@ Game::Game( MainWindow& wnd )
 	inhibitLeft = false;
 	inhibitRight = false;
 
+
+	x2 = 155;
+	y2 = 450;
+	r2 = 255;
+	g2 = 255;
+	b2 = 255;
+
+
 }
 
 void Game::Go()
@@ -101,8 +109,8 @@ void Game::UpdateModel()
 	g = wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0 : 255;
 
 
-	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
-	shapeIsChanged = (x >= 200 && x <= 350);
+	//shapeIsChanged = ;
+	shapeIsChanged = (x >= 200 && x <= 350) || wnd.kbd.KeyIsPressed(VK_SHIFT);
 
 
 	x += vx;
@@ -114,24 +122,33 @@ void Game::UpdateModel()
 		vx = 0;
 		vy = 0;
 	}
-
 	if (x - 6 <= 1){
 		x = 7;
 		vx = 0;
 		vy = 0;
 	}
-
 	if (y + 6 >= gfx.ScreenHeight) {
 		y = gfx.ScreenHeight - 7;
 		vx = 0;
 		vy = 0;
 	}
-
 	if (y - 6 <= 1) {
 		y = 7;
 		vx = 0;
 		vy = 0;
 	}
+
+
+	//Ovelaping
+	if ((x + 6 >= x2 - 6) && (x - 6 <= x2 + 6) && (y+6) >= (y2-6)&&(y-6)<=(y2+6)) {
+		r = 255;
+		g = 0;
+		b = 0;
+	}
+	else {
+		r = 255; g = 255; b = 255;
+	}
+
 
 	
 	
@@ -165,7 +182,7 @@ void Game::ComposeFrame()
 			gfx.PutPixel(x + 5, y + 4, r, g, b);
 			gfx.PutPixel(x + 5, y + 5, r, g, b);
 
-			/////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 			// Vertical top-left
 			gfx.PutPixel(x - 4, y - 5, r, g, b);
@@ -218,6 +235,59 @@ void Game::ComposeFrame()
 			gfx.PutPixel(x + 5, y, r, g, b);
 			gfx.PutPixel(x + 6, y, r, g, b);
 		}
+
+
+
+		// SECOD SQUARE
+		{
+			// Horizontal top-left
+			gfx.PutPixel(x2 - 5, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 - 5, y2 - 4, r2, g2, b2);
+			gfx.PutPixel(x2 - 5, y2 - 3, r2, g2, b2);
+
+			// Horizontal bottom-left
+			gfx.PutPixel(x2 - 5, y2 + 3, r2, g2, b2);
+			gfx.PutPixel(x2 - 5, y2 + 4, r2, g2, b2);
+			gfx.PutPixel(x2 - 5, y2 + 5, r2, g2, b2);
+
+			// Horizontal top-right
+			gfx.PutPixel(x2 + 5, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 + 5, y2 - 4, r2, g2, b2);
+			gfx.PutPixel(x2 + 5, y2 - 3, r2, g2, b2);
+
+			// Horizontal bottom-right
+			gfx.PutPixel(x2 + 5, y2 + 3, r2, g2, b2);
+			gfx.PutPixel(x2 + 5, y2 + 4, r2, g2, b2);
+			gfx.PutPixel(x2 + 5, y2 + 5, r2, g2, b2);
+
+			/////////////////////////////////////////////
+
+			// Vertical top-left
+			gfx.PutPixel(x2 - 4, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 - 3, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 - 2, y2 - 5, r2, g2, b2);
+
+			// Vertical bottom-left
+			gfx.PutPixel(x2 - 4, y2 + 5, r2, g2, b2);
+			gfx.PutPixel(x2 - 3, y2 + 5, r2, g2, b2);
+			gfx.PutPixel(x2 - 2, y2 + 5, r2, g2, b2);
+
+			// Vertical top-right
+			gfx.PutPixel(x2 + 4, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 + 3, y2 - 5, r2, g2, b2);
+			gfx.PutPixel(x2 + 2, y2 - 5, r2, g2, b2);
+
+			// Vertical bottom-right
+			gfx.PutPixel(x2 + 4, y2 + 5, r2, g2, b2);
+			gfx.PutPixel(x2 + 3, y2 + 5, r2, g2, b2);
+			gfx.PutPixel(x2 + 2, y2 + 4, r2, g2, b2);
+
+		}
 		
+
+
+
+
+
 
 }
