@@ -45,7 +45,7 @@ Game::Game( MainWindow& wnd )
 	r2 = 255;
 	g2 = 255;
 	b2 = 255;
-
+	colliding = false;
 
 }
 
@@ -106,11 +106,9 @@ void Game::UpdateModel()
 		inhibitRight = false;
 	}
 	
-	g = wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0 : 255;
 
-
-	//shapeIsChanged = ;
-	shapeIsChanged = (x >= 200 && x <= 350) || wnd.kbd.KeyIsPressed(VK_SHIFT);
+	// Square if shift pressed
+	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
 
 
 	x += vx;
@@ -140,19 +138,12 @@ void Game::UpdateModel()
 
 
 	//Ovelaping
-	if ((x + 6 >= x2 - 6) && (x - 6 <= x2 + 6) && (y+6) >= (y2-6)&&(y-6)<=(y2+6)) {
-		r = 255;
-		g = 0;
-		b = 0;
-	}
-	else {
-		r = 255; g = 255; b = 255;
-	}
+	colliding = ((x + 6 >= x2 - 6) && (x - 6 <= x2 + 6) && (y + 6) >= (y2 - 6) && (y - 6) <= (y2 + 6));
 
 
 	
 	
-
+	
 }
 
 
@@ -284,10 +275,13 @@ void Game::ComposeFrame()
 
 		}
 		
-
-
-
-
-
+		if (colliding) {
+			r = 0;
+			g = 255;
+			b = 20;
+		}
+		else {
+			r = 255; g = 255; b = 255;
+		}
 
 }

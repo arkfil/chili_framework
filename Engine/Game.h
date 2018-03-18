@@ -49,8 +49,10 @@ private:
 	bool inhibitLeft;
 	bool inhibitRight;
 
-	int x2, y2, r2, g2, b2;
+	
 
+	int x2, y2, r2, g2, b2;
+	bool colliding;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
