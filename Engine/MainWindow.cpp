@@ -125,6 +125,7 @@ LRESULT WINAPI MainWindow::_HandleMsgThunk( HWND hWnd,UINT msg,WPARAM wParam,LPA
 	// retrieve ptr to window class
 	MainWindow* const pWnd = reinterpret_cast<MainWindow*>( GetWindowLongPtr( hWnd,GWLP_USERDATA ) );
 	// forward message to window class handler
+
 	return pWnd->HandleMsg( hWnd,msg,wParam,lParam );
 }
 

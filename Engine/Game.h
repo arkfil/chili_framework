@@ -40,6 +40,15 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	int x, y;
+	int vx, vy;
+	int r, g, b;
+	bool shapeIsChanged;
+	bool inhibitUp;
+	bool inhibitDown;
+	bool inhibitLeft;
+	bool inhibitRight;
+
 	/********************************/
 	/*  User Variables              */
 	/********************************/

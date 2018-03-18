@@ -26,6 +26,19 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd )
 {
+	x = 400;
+	y = 300;
+	r = 255;
+	g = 255;
+	b = 255;
+	shapeIsChanged = false;
+	vx = 0;
+	vy = 0;
+	inhibitUp = false;
+	inhibitDown = false;
+	inhibitLeft = false;
+	inhibitRight = false;
+
 }
 
 void Game::Go()
@@ -38,30 +51,99 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-}
 
-int x = 200;
-int y = 400;
-int r = 255, g = 255, b = 255;
-void Game::ComposeFrame()
-{
-   //800x600
-
-	y = wnd.kbd.KeyIsPressed(VK_UP) ? ----y : y;
-	y = wnd.kbd.KeyIsPressed(VK_DOWN) ? ++++y : y;
-	x = wnd.kbd.KeyIsPressed(VK_RIGHT) ? ++++x : x;
-	x = wnd.kbd.KeyIsPressed(VK_LEFT) ? ----x : x;
+	//800x600
 
 
+	if (wnd.kbd.KeyIsPressed(VK_UP)) {
+		if (inhibitUp) {}
+		else{
+			--vy;
+			inhibitUp = true;
+		}
+	}
+	else {
+		inhibitUp = false;
+	}
+	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
+		if (inhibitDown) {}
+		else {
+			++vy;
+			inhibitDown = true;
+		}
+	}
+	else {
+		inhibitDown = false;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
+		if (inhibitLeft) {}
+		else {
+			--vx;
+			inhibitLeft = true;
+		}
+	}
+	else {
+		inhibitLeft = false;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
+		if (inhibitRight) {}
+		else {
+			++vx;
+			inhibitRight = true;
+		}
+	}
+	else {
+		inhibitRight = false;
+	}
+	
 	g = wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0 : 255;
 
 
+	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
+	shapeIsChanged = (x >= 200 && x <= 350);
 
 
+	x += vx;
+	y += vy;
 
 
-	if (x>=7 && y>=7 && x<=793 && y<=593) {
-		if (wnd.kbd.KeyIsPressed(VK_SHIFT)) {
+	if (x + 6 >= gfx.ScreenWidth) {
+		x = gfx.ScreenWidth - 7;
+		vx = 0;
+		vy = 0;
+	}
+
+	if (x - 6 <= 1){
+		x = 7;
+		vx = 0;
+		vy = 0;
+	}
+
+	if (y + 6 >= gfx.ScreenHeight) {
+		y = gfx.ScreenHeight - 7;
+		vx = 0;
+		vy = 0;
+	}
+
+	if (y - 6 <= 1) {
+		y = 7;
+		vx = 0;
+		vy = 0;
+	}
+
+	
+	
+
+}
+
+
+void Game::ComposeFrame()
+{
+  
+
+		if ( shapeIsChanged ) {
 
 			// Horizontal top-left
 			gfx.PutPixel(x - 5, y - 5, r, g, b);
@@ -103,7 +185,7 @@ void Game::ComposeFrame()
 			// Vertical bottom-right
 			gfx.PutPixel(x + 4, y + 5, r, g, b);
 			gfx.PutPixel(x + 3, y + 5, r, g, b);
-			gfx.PutPixel(x + 2, y + 5, r, g, b);
+			gfx.PutPixel(x + 2, y + 4, r, g, b);
 
 
 		}
@@ -137,10 +219,5 @@ void Game::ComposeFrame()
 			gfx.PutPixel(x + 6, y, r, g, b);
 		}
 		
-	}
-	else if (y >= 593) y = 7;
-	else if (y <= 7 ) y = 593;
-	else if (x <= 7) x = 793;
-	else if (x >= 793) x = 7;
-	
+
 }
