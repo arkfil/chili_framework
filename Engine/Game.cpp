@@ -31,13 +31,7 @@ Game::Game( MainWindow& wnd )
 	r = 255;
 	g = 255;
 	b = 255;
-	shapeIsChanged = false;
-	vx = 0;
-	vy = 0;
-	inhibitUp = false;
-	inhibitDown = false;
-	inhibitLeft = false;
-	inhibitRight = false;
+
 
 
 	x2 = 155;
@@ -45,7 +39,7 @@ Game::Game( MainWindow& wnd )
 	r2 = 255;
 	g2 = 255;
 	b2 = 255;
-
+	colliding = false;
 
 }
 
@@ -59,235 +53,118 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-
 	//800x600
 
+	if (wnd.kbd.KeyIsPressed(VK_UP)) { y -= 3; }
+	if (wnd.kbd.KeyIsPressed(VK_DOWN)) { y += 3; }
+	if (wnd.kbd.KeyIsPressed(VK_LEFT)) { x -= 3; }
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) { x += 3; }
 
-	if (wnd.kbd.KeyIsPressed(VK_UP)) {
-		if (inhibitUp) {}
-		else{
-			--vy;
-			inhibitUp = true;
-		}
-	}
-	else {
-		inhibitUp = false;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-		if (inhibitDown) {}
-		else {
-			++vy;
-			inhibitDown = true;
-		}
-	}
-	else {
-		inhibitDown = false;
-	}
-
-	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-		if (inhibitLeft) {}
-		else {
-			--vx;
-			inhibitLeft = true;
-		}
-	}
-	else {
-		inhibitLeft = false;
-	}
-
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-		if (inhibitRight) {}
-		else {
-			++vx;
-			inhibitRight = true;
-		}
-	}
-	else {
-		inhibitRight = false;
-	}
-	
-	g = wnd.kbd.KeyIsPressed(VK_CONTROL) ? 0 : 255;
-
-
-	//shapeIsChanged = ;
-	shapeIsChanged = (x >= 200 && x <= 350) || wnd.kbd.KeyIsPressed(VK_SHIFT);
-
-
-	x += vx;
-	y += vy;
-
-
-	if (x + 6 >= gfx.ScreenWidth) {
-		x = gfx.ScreenWidth - 7;
-		vx = 0;
-		vy = 0;
-	}
-	if (x - 6 <= 1){
-		x = 7;
-		vx = 0;
-		vy = 0;
-	}
-	if (y + 6 >= gfx.ScreenHeight) {
-		y = gfx.ScreenHeight - 7;
-		vx = 0;
-		vy = 0;
-	}
-	if (y - 6 <= 1) {
-		y = 7;
-		vx = 0;
-		vy = 0;
-	}
-
+	KeepInBouderies(x, y);
+	//if (x + 6 >= gfx.ScreenWidth) {
+	//	x = gfx.ScreenWidth - 7;
+	//}
+	//if (x - 6 <= 1){
+	//	x = 7;
+	//}
+	//if (y + 6 >= gfx.ScreenHeight) {
+	//	y = gfx.ScreenHeight - 7;
+	//}
+	//if (y - 6 <= 1) {
+	//	y = 7;
+	//}
 
 	//Ovelaping
-	if ((x + 6 >= x2 - 6) && (x - 6 <= x2 + 6) && (y+6) >= (y2-6)&&(y-6)<=(y2+6)) {
-		r = 255;
-		g = 0;
-		b = 0;
-	}
-	else {
-		r = 255; g = 255; b = 255;
-	}
-
-
-	
-	
-
+	colliding = areBoxesColliding(x, y, x2, y2);	
 }
+
+
 
 
 void Game::ComposeFrame()
 {
   
 
-		if ( shapeIsChanged ) {
-
-			// Horizontal top-left
-			gfx.PutPixel(x - 5, y - 5, r, g, b);
-			gfx.PutPixel(x - 5, y - 4, r, g, b);
-			gfx.PutPixel(x - 5, y - 3, r, g, b);
-
-			// Horizontal bottom-left
-			gfx.PutPixel(x - 5, y + 3, r, g, b);
-			gfx.PutPixel(x - 5, y + 4, r, g, b);
-			gfx.PutPixel(x - 5, y + 5, r, g, b);
-
-			// Horizontal top-right
-			gfx.PutPixel(x + 5, y - 5, r, g, b);
-			gfx.PutPixel(x + 5, y - 4, r, g, b);
-			gfx.PutPixel(x + 5, y - 3, r, g, b);
-
-			// Horizontal bottom-right
-			gfx.PutPixel(x + 5, y + 3, r, g, b);
-			gfx.PutPixel(x + 5, y + 4, r, g, b);
-			gfx.PutPixel(x + 5, y + 5, r, g, b);
-
-///////////////////////////////////////////////////////////////////////////
-
-			// Vertical top-left
-			gfx.PutPixel(x - 4, y - 5, r, g, b);
-			gfx.PutPixel(x - 3, y - 5, r, g, b);
-			gfx.PutPixel(x - 2, y - 5, r, g, b);
-
-			// Vertical bottom-left
-			gfx.PutPixel(x - 4, y + 5, r, g, b);
-			gfx.PutPixel(x - 3, y + 5, r, g, b);
-			gfx.PutPixel(x - 2, y + 5, r, g, b);
-
-			// Vertical top-right
-			gfx.PutPixel(x + 4, y - 5, r, g, b);
-			gfx.PutPixel(x + 3, y - 5, r, g, b);
-			gfx.PutPixel(x + 2, y - 5, r, g, b);
-
-			// Vertical bottom-right
-			gfx.PutPixel(x + 4, y + 5, r, g, b);
-			gfx.PutPixel(x + 3, y + 5, r, g, b);
-			gfx.PutPixel(x + 2, y + 4, r, g, b);
-
-
-		}
-		else {
-			// Vertical top
-			gfx.PutPixel(x, y - 6, r, g, b);
-			gfx.PutPixel(x, y - 5, r, g, b);
-			gfx.PutPixel(x, y - 4, r, g, b);
-			gfx.PutPixel(x, y - 3, r, g, b);
-			gfx.PutPixel(x, y - 2, r, g, b);
-
-			// Vertical bottom
-			gfx.PutPixel(x, y + 2, r, g, b);
-			gfx.PutPixel(x, y + 3, r, g, b);
-			gfx.PutPixel(x, y + 4, r, g, b);
-			gfx.PutPixel(x, y + 5, r, g, b);
-			gfx.PutPixel(x, y + 6, r, g, b);
-
-			// Horizontal left
-			gfx.PutPixel(x - 2, y, r, g, b);
-			gfx.PutPixel(x - 3, y, r, g, b);
-			gfx.PutPixel(x - 4, y, r, g, b);
-			gfx.PutPixel(x - 5, y, r, g, b);
-			gfx.PutPixel(x - 6, y, r, g, b);
-
-			// Horizontal right
-			gfx.PutPixel(x + 2, y, r, g, b);
-			gfx.PutPixel(x + 3, y, r, g, b);
-			gfx.PutPixel(x + 4, y, r, g, b);
-			gfx.PutPixel(x + 5, y, r, g, b);
-			gfx.PutPixel(x + 6, y, r, g, b);
-		}
-
-
+		DrawBox(x, y, r, g, b);
 
 		// SECOD SQUARE
-		{
-			// Horizontal top-left
-			gfx.PutPixel(x2 - 5, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 - 5, y2 - 4, r2, g2, b2);
-			gfx.PutPixel(x2 - 5, y2 - 3, r2, g2, b2);
+		DrawBox(x2,y2,r2,g2,b2);
 
-			// Horizontal bottom-left
-			gfx.PutPixel(x2 - 5, y2 + 3, r2, g2, b2);
-			gfx.PutPixel(x2 - 5, y2 + 4, r2, g2, b2);
-			gfx.PutPixel(x2 - 5, y2 + 5, r2, g2, b2);
 
-			// Horizontal top-right
-			gfx.PutPixel(x2 + 5, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 + 5, y2 - 4, r2, g2, b2);
-			gfx.PutPixel(x2 + 5, y2 - 3, r2, g2, b2);
 
-			// Horizontal bottom-right
-			gfx.PutPixel(x2 + 5, y2 + 3, r2, g2, b2);
-			gfx.PutPixel(x2 + 5, y2 + 4, r2, g2, b2);
-			gfx.PutPixel(x2 + 5, y2 + 5, r2, g2, b2);
-
-			/////////////////////////////////////////////
-
-			// Vertical top-left
-			gfx.PutPixel(x2 - 4, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 - 3, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 - 2, y2 - 5, r2, g2, b2);
-
-			// Vertical bottom-left
-			gfx.PutPixel(x2 - 4, y2 + 5, r2, g2, b2);
-			gfx.PutPixel(x2 - 3, y2 + 5, r2, g2, b2);
-			gfx.PutPixel(x2 - 2, y2 + 5, r2, g2, b2);
-
-			// Vertical top-right
-			gfx.PutPixel(x2 + 4, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 + 3, y2 - 5, r2, g2, b2);
-			gfx.PutPixel(x2 + 2, y2 - 5, r2, g2, b2);
-
-			// Vertical bottom-right
-			gfx.PutPixel(x2 + 4, y2 + 5, r2, g2, b2);
-			gfx.PutPixel(x2 + 3, y2 + 5, r2, g2, b2);
-			gfx.PutPixel(x2 + 2, y2 + 4, r2, g2, b2);
-
+		if (colliding) {
+			r = 0;
+			g = 255;
+			b = 20;
 		}
-		
+		else {
+			r = 255; g = 255; b = 255;
+		}
+}
 
+void Game::DrawBox(int x, int y, int r, int g, int b)
+{
+	// Horizontal top-left
+	gfx.PutPixel(x - 5, y - 5, r, g, b);
+	gfx.PutPixel(x - 5, y - 4, r, g, b);
+	gfx.PutPixel(x - 5, y - 3, r, g, b);
 
+	// Horizontal bottom-left
+	gfx.PutPixel(x - 5, y + 3, r, g, b);
+	gfx.PutPixel(x - 5, y + 4, r, g, b);
+	gfx.PutPixel(x - 5, y + 5, r, g, b);
 
+	// Horizontal top-right
+	gfx.PutPixel(x + 5, y - 5, r, g, b);
+	gfx.PutPixel(x + 5, y - 4, r, g, b);
+	gfx.PutPixel(x + 5, y - 3, r, g, b);
 
+	// Horizontal bottom-right
+	gfx.PutPixel(x + 5, y + 3, r, g, b);
+	gfx.PutPixel(x + 5, y + 4, r, g, b);
+	gfx.PutPixel(x + 5, y + 5, r, g, b);
 
+	/////////////////////////////////////////////
 
+	// Vertical top-left
+	gfx.PutPixel(x - 4, y - 5, r, g, b);
+	gfx.PutPixel(x - 3, y - 5, r, g, b);
+	gfx.PutPixel(x - 2, y - 5, r, g, b);
+
+	// Vertical bottom-left
+	gfx.PutPixel(x - 4, y + 5, r, g, b);
+	gfx.PutPixel(x - 3, y + 5, r, g, b);
+	gfx.PutPixel(x - 2, y + 5, r, g, b);
+
+	// Vertical top-right
+	gfx.PutPixel(x + 4, y - 5, r, g, b);
+	gfx.PutPixel(x + 3, y - 5, r, g, b);
+	gfx.PutPixel(x + 2, y - 5, r, g, b);
+
+	// Vertical bottom-right
+	gfx.PutPixel(x + 4, y + 5, r, g, b);
+	gfx.PutPixel(x + 3, y + 5, r, g, b);
+	gfx.PutPixel(x + 2, y + 4, r, g, b);
+
+}
+
+bool Game::areBoxesColliding(int x_box1, int y_box1, int x_box2, int y_box2)
+{
+	return ((x_box1 + 6 >= x_box2 - 6) && (x_box1 - 6 <= x_box2 + 6) && (y_box1 + 6) >= (y_box2 - 6) && (y_box1 - 6) <= (y_box2 + 6));
+}
+
+void Game::KeepInBouderies(int x, int y)
+{
+	if (x + 6 >= gfx.ScreenWidth) {
+		this->x = gfx.ScreenWidth - 7;
+	}
+	if (x - 6 <= 1) {
+		this->x = 7;
+	}
+	if (y + 6 >= gfx.ScreenHeight) {
+		this->y = gfx.ScreenHeight - 7;
+	}
+	if (y - 6 <= 1) {
+		this->y = 7;
+	}
 }

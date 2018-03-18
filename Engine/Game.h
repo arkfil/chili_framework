@@ -36,22 +36,21 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void DrawBox(int x, int y, int r, int g, int b);
+	bool areBoxesColliding(int x_box1, int y_box1, int x_box2, int y_box2);
+	void KeepInBouderies(int x,int y);
+
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	int x, y;
-	int vx, vy;
-	int r, g, b;
-	bool shapeIsChanged;
-	bool inhibitUp;
-	bool inhibitDown;
-	bool inhibitLeft;
-	bool inhibitRight;
-
-	int x2, y2, r2, g2, b2;
-
 	/********************************/
 	/*  User Variables              */
+	int x, y;
+	int r, g, b;
+	
+	int x2, y2;
+	int r2, g2, b2;
+	bool colliding;
 	/********************************/
 };
