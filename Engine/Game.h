@@ -36,9 +36,13 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
-	void DrawBox(int x, int y, int r, int g, int b);
-	bool areBoxesColliding(int x_box1, int y_box1, int x_box2, int y_box2);
-	void KeepBoxInBouderies(int &x,int &y);
+	void DrawBoard(int x, int y, int r, int g, int b);
+	void KeepBoxInBouderies(int &y);
+	void BoxMovementSupport( int &y, int down, int up);
+	void ShowBall( int x, int y, int radius, int r, int g, int b );
+
+	void MoveBall(int &x, int &y, int mod_x, int mod_y);
+	void KeepBallInBouderies(int &ball_x, int &ball_y, int &mod_x, int &mod_y);
 
 	/********************************/
 private:
@@ -46,11 +50,21 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int x, y;
-	int r, g, b;
-	
-	int x2, y2;
-	int r2, g2, b2;
-	bool colliding;
+
+	int board1_baseX;
+	int board1_baseY;
+	int board1_r, board1_g, board1_b;
+
+	int board2_baseX;
+	int board2_baseY;
+	int board2_r, board2_g, board2_b;
+
+	int ball_x;
+	int ball_y;
+	int ball_r, ball_g, ball_b;
+
+	int mod_x, mod_y;
+
+
 	/********************************/
 };
