@@ -38,7 +38,7 @@ private:
 	/*  User Functions              */
 	void DrawBox(int x, int y, int r, int g, int b);
 	bool areBoxesColliding(int x_box1, int y_box1, int x_box2, int y_box2);
-	void KeepInBouderies(int x,int y);
+	void KeepBoxInBouderies(int &x,int &y);
 
 	/********************************/
 private:

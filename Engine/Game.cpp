@@ -60,19 +60,7 @@ void Game::UpdateModel()
 	if (wnd.kbd.KeyIsPressed(VK_LEFT)) { x -= 3; }
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) { x += 3; }
 
-	KeepInBouderies(x, y);
-	//if (x + 6 >= gfx.ScreenWidth) {
-	//	x = gfx.ScreenWidth - 7;
-	//}
-	//if (x - 6 <= 1){
-	//	x = 7;
-	//}
-	//if (y + 6 >= gfx.ScreenHeight) {
-	//	y = gfx.ScreenHeight - 7;
-	//}
-	//if (y - 6 <= 1) {
-	//	y = 7;
-	//}
+	KeepBoxInBouderies(x, y);
 
 	//Ovelaping
 	colliding = areBoxesColliding(x, y, x2, y2);	
@@ -153,18 +141,18 @@ bool Game::areBoxesColliding(int x_box1, int y_box1, int x_box2, int y_box2)
 	return ((x_box1 + 6 >= x_box2 - 6) && (x_box1 - 6 <= x_box2 + 6) && (y_box1 + 6) >= (y_box2 - 6) && (y_box1 - 6) <= (y_box2 + 6));
 }
 
-void Game::KeepInBouderies(int x, int y)
+void Game::KeepBoxInBouderies(int &x, int &y)
 {
 	if (x + 6 >= gfx.ScreenWidth) {
-		this->x = gfx.ScreenWidth - 7;
+		x = gfx.ScreenWidth - 7;
 	}
 	if (x - 6 <= 1) {
-		this->x = 7;
+		x = 7;
 	}
 	if (y + 6 >= gfx.ScreenHeight) {
-		this->y = gfx.ScreenHeight - 7;
+		y = gfx.ScreenHeight - 7;
 	}
 	if (y - 6 <= 1) {
-		this->y = 7;
+		y = 7;
 	}
 }
