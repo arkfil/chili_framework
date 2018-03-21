@@ -32,14 +32,25 @@ Game::Game( MainWindow& wnd )
 	std::uniform_int_distribution<int> xDist(0,770);
 	std::uniform_int_distribution<int> yDist(0, 570);
 
-	poo0X = xDist(rgn);
-	poo0Y = yDist(rgn);
+	poo0.x = xDist(rgn);
+	poo0.y = yDist(rgn);
 
-	poo1X = xDist(rgn);
-	poo1Y = yDist(rgn);
+	poo1.x = xDist(rgn);
+	poo1.y = yDist(rgn);
 
-	poo2X = xDist(rgn);
-	poo2Y = yDist(rgn);
+	poo2.x = xDist(rgn);
+	poo2.y = yDist(rgn);
+
+	poo0.vx=1;
+	poo0.vy=1;
+	poo1.vx=1;
+	poo1.vy=1;
+	poo2.vx=1;
+	poo2.vy=1;
+
+	dude.x = 200;
+	dude.y = 200;
+
 }
 
 void Game::Go()
@@ -54,52 +65,34 @@ void Game::UpdateModel()
 {
 	if (isStarted) {
 		if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-			dudeX += 3;
+			dude.x += 3;
 		}
 		if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-			dudeX -= 3;
+			dude.x -= 3;
 		}
 
 		if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-			dudeY += 3;
+			dude.y += 3;
 		}
 
 		if (wnd.kbd.KeyIsPressed(VK_UP)) {
-			dudeY -= 3;
+			dude.y -= 3;
 		}
-		dudeX = ClampScreenX(dudeX, dudeWidth);
-		dudeY = ClampScreenY(dudeY, dudeHeight);
 
-	/*	poo0X = ClampScreenX(poo0X, pooWidth);
-		poo0Y = ClampScreenY(poo0Y, pooHeight);
-
-		poo1X = ClampScreenX(poo1X, pooWidth);
-		poo1Y = ClampScreenY(poo1Y, pooHeight);
-
-		poo2X = ClampScreenX(poo2X, pooWidth);
-		poo2Y = ClampScreenY(poo2Y, pooHeight);
-*/
+		poo0.ProcessConsumption(dude.x,dude.y,Dude::width, Dude::height);
+		poo1.ProcessConsumption(dude.x, dude.y, Dude::width, Dude::height);
+		poo2.ProcessConsumption(dude.x, dude.y, Dude::width, Dude::height);
 
 
 
-		if (isColliding(dudeX, dudeY, dudeWidth, dudeHeight,
-			poo0X, poo0Y, pooWidth, pooHeight))
-			poo0IsEaten = true;
-		if (isColliding(dudeX, dudeY, dudeWidth, dudeHeight,
-			poo1X, poo1Y, pooWidth, pooHeight))
-			poo1IsEaten = true;
-		if (isColliding(dudeX, dudeY, dudeWidth, dudeHeight,
-			poo2X, poo2Y, pooWidth, pooHeight))
-			poo2IsEaten = true;
+		dude.clampToScreen();
 
-		poo0X=DriftAroundX(poo0MoveX, poo0X, pooWidth);
-		poo0Y=DriftAroundY(poo0MoveY, poo0Y, pooWidth);
 
-		poo1X=DriftAroundX(poo1MoveX, poo1X, pooWidth);
-		poo1Y=DriftAroundY(poo1MoveY, poo1Y, pooWidth);
+		
 
-		poo2X=DriftAroundX(poo2MoveX, poo2X, pooWidth);
-		poo2Y=DriftAroundY(poo2MoveY, poo2Y, pooWidth);
+		poo0.Update();
+		poo1.Update();
+		poo2.Update();
 
 	}
 	else {
@@ -29017,69 +29010,7 @@ void Game::DrawGameOver(int x, int y)
 
 }
 
-int Game::ClampScreenX(int x, int width)
-{
-	const int right = x + width;
-	if (x < 0) {
-		return 0;
-	}
-	else if (right>=gfx.ScreenWidth) {
-		return (gfx.ScreenWidth - 1) - width;
-	}
-	else {
-		return x;
-	}
-}
 
-int Game::ClampScreenY(int y, int height)
-{
-	const int bottom = y + height;
-	if (y < 0) {
-		return 0;
-	}
-	else if (bottom >= gfx.ScreenHeight) {
-		return (gfx.ScreenHeight - 1) - height;
-	}
-	else {
-		return y;
-	}
-}
-
-int Game::DriftAroundX(bool &direcX, int x, int width)
-{
-	if (x <= 2 || x >= gfx.ScreenWidth - 2 - width) {
-		direcX = !direcX;
-	}
-
-	x = direcX ? ++x : --x;
-	return x;
-}
-
-int Game::DriftAroundY(bool &direcY, int y, int height)
-{
-	if (y <= 2 || y >= gfx.ScreenHeight - 2 - height) {
-		direcY = !direcY;
-	}
-
-	y = direcY ? ++y : --y;
-	return y;
-}
-
-bool Game::isColliding(int x0, int y0, int width0, int height0, int x1, int y1, int width1, int height1)
-{
-	const int right0 = x0 + width0;
-	const int bottom0 = y0 + height0;
-
-	const int right1 = x1 + width1;
-	const int bottom1 = y1 + height1;
-
-
-	return right0 >= x1 
-		&& x0 <= right1
-		&& bottom0 >= y1 
-		&& y0 <= bottom1;
-	
-}
 
 void Game::ComposeFrame()
 {
@@ -29087,18 +29018,17 @@ void Game::ComposeFrame()
 		DrawTitleScreen(325,211);
 	}
 	else {
-		if (poo0IsEaten && poo1IsEaten && poo2IsEaten)
+		if (poo0.isEaten && poo1.isEaten && poo2.isEaten)
 			DrawGameOver(358, 268);
 
-		DrawFace(dudeX, dudeY);
+		DrawFace(dude.x, dude.y);
 
-		if (!poo0IsEaten)
-			DrawPoo(poo0X, poo0Y);
-		if (!poo1IsEaten)
-			DrawPoo(poo1X, poo1Y);
-		if (!poo2IsEaten)
-			DrawPoo(poo2X, poo2Y);
-
+		if (!poo0.isEaten)
+			DrawPoo(poo0.x, poo0.y);
+		if (!poo1.isEaten)
+			DrawPoo(poo1.x, poo1.y);
+		if (!poo2.isEaten)
+			DrawPoo(poo2.x, poo2.y);
 
 	}
 }

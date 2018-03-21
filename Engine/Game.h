@@ -23,6 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Poo.h"
+#include "Dude.h"
 
 class Game
 {
@@ -42,15 +44,7 @@ private:
 	void DrawTitleScreen(int x, int y);
 	void DrawGameOver(int x, int y);
 
-	int ClampScreenX(int x, int width);
-	int ClampScreenY(int y, int height);
-
-	int DriftAroundX(bool &direcX, int x, int width);
-	int DriftAroundY( bool &direcY, int y, int height);
-
 	
-	bool isColliding(int x0, int y0, int width0, int height0,
-		int x1, int y1, int width1, int height1);
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -58,36 +52,14 @@ private:
 	/********************************/
 	/*  User Variables              */
 
-	int dudeX = 200;
-	int dudeY = 200;
-
-	int dudeWidth = 20;
-	int dudeHeight = 20;
+	Dude dude;
 
 	bool isStarted = false;
 
-	int poo0X = 120;
-	int poo0Y = 90;
 
-	int poo1X = 500;
-	int poo1Y = 400;
-
-	int poo2X = 300;
-	int poo2Y = 80;
-
-	bool poo0MoveY = true;
-	bool poo0MoveX = false;
-	bool poo1MoveY = true;
-	bool poo1MoveX = false;
-	bool poo2MoveY = true;
-	bool poo2MoveX = false;
-
-	int pooWidth = 24;
-	int pooHeight = 24;
-
-	int poo0IsEaten = false;
-	int poo1IsEaten = false;
-	int poo2IsEaten = false;
+	Poo poo0;
+	Poo poo1;
+	Poo poo2;
 
 	/********************************/
 };
