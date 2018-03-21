@@ -70,7 +70,7 @@ void Game::UpdateModel()
 		dudeX = ClampScreenX(dudeX, dudeWidth);
 		dudeY = ClampScreenY(dudeY, dudeHeight);
 
-		poo0X = ClampScreenX(poo0X, pooWidth);
+	/*	poo0X = ClampScreenX(poo0X, pooWidth);
 		poo0Y = ClampScreenY(poo0Y, pooHeight);
 
 		poo1X = ClampScreenX(poo1X, pooWidth);
@@ -78,7 +78,7 @@ void Game::UpdateModel()
 
 		poo2X = ClampScreenX(poo2X, pooWidth);
 		poo2Y = ClampScreenY(poo2Y, pooHeight);
-
+*/
 
 
 
