@@ -58,21 +58,7 @@ void Game::UpdateModel()
 			--x0;
 		}
 	}
-////////////////////////////////////////////////
-	/*if (wnd.kbd.KeyIsPressed('S')) {
-		if(y+height + 1<= Graphics::ScreenHeight)
-			++height;
-	}
-	if (wnd.kbd.KeyIsPressed('W')) {
-		--height;
-	}
-	if (wnd.kbd.KeyIsPressed('D')) {
-		if (x + width + 1 <= Graphics::ScreenWidth)
-			++width;
-	}
-	if (wnd.kbd.KeyIsPressed('A')) {
-		--width;
-	}*/
+
 
 	if (wnd.mouse.LeftIsPressed()) {
 		x1 = wnd.mouse.GetPosX();

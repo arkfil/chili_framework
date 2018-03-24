@@ -25,6 +25,7 @@
 #include "ChiliException.h"
 #include "Colors.h"
 
+
 class Graphics
 {
 public:
@@ -57,7 +58,12 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
-	void DrawRectangle(int x0,int y0, int x1, int y1, Color c);
+	void DrawRectangleDim(int x, int y, int width, int height, Color c) {
+		DrawRectangle( x,  y,  x + width,  y + height,  c);
+	}
+
+	void DrawRectangle(int x0, int y0, int x1, int y1, Color c);
+
 
 	~Graphics();
 private:
