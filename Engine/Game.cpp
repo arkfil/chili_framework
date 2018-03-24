@@ -38,8 +38,51 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
+		if (y + height <= Graphics::ScreenHeight - 1) {
+			++y;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_UP)) {
+		if (y>1) {
+			--y;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
+		if (x + width <= Graphics::ScreenWidth - 1) {
+			++x;
+		}
+	}
+	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
+		if (x > 1) {
+			--x;
+		}
+	}
+////////////////////////////////////////////////
+	if (wnd.kbd.KeyIsPressed('S')) {
+		if(y+height + 1<= Graphics::ScreenHeight)
+			++height;
+	}
+	if (wnd.kbd.KeyIsPressed('W')) {
+		--height;
+	}
+	if (wnd.kbd.KeyIsPressed('D')) {
+		if (x + width + 1 <= Graphics::ScreenWidth)
+			++width;
+	}
+	if (wnd.kbd.KeyIsPressed('A')) {
+		--width;
+	}
+
 }
+
 
 void Game::ComposeFrame()
 {
+
+	for (int i = x; i <= x+width-1; ++i) {
+		for (int j = y; j <= y+ height-1; ++j) {
+			gfx.PutPixel(i,j,255,255,255);
+		}
+	}
 }

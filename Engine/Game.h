@@ -36,11 +36,15 @@ private:
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	//void clampToScreen(int &x, int &y, int &width, int &height);
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+	int x=0,y=0,width=100,height=100;
+
+
 	/********************************/
 };
