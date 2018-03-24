@@ -39,27 +39,27 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-		if (y + height <= Graphics::ScreenHeight - 1) {
-			++y;
+		if (y0 + y1 <= Graphics::ScreenHeight - 1) {
+			++y0;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_UP)) {
-		if (y>1) {
-			--y;
+		if (y0>1) {
+			--y0;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-		if (x + width <= Graphics::ScreenWidth - 1) {
-			++x;
+		if (x0 + x1 <= Graphics::ScreenWidth - 1) {
+			++x0;
 		}
 	}
 	if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-		if (x > 1) {
-			--x;
+		if (x0 > 1) {
+			--x0;
 		}
 	}
 ////////////////////////////////////////////////
-	if (wnd.kbd.KeyIsPressed('S')) {
+	/*if (wnd.kbd.KeyIsPressed('S')) {
 		if(y+height + 1<= Graphics::ScreenHeight)
 			++height;
 	}
@@ -72,6 +72,11 @@ void Game::UpdateModel()
 	}
 	if (wnd.kbd.KeyIsPressed('A')) {
 		--width;
+	}*/
+
+	if (wnd.mouse.LeftIsPressed()) {
+		x1 = wnd.mouse.GetPosX();
+		y1 = wnd.mouse.GetPosY();
 	}
 
 }
@@ -79,10 +84,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-
-	for (int i = x; i <= x+width-1; ++i) {
-		for (int j = y; j <= y+ height-1; ++j) {
-			gfx.PutPixel(i,j,255,255,255);
-		}
-	}
+	gfx.DrawRectangle(x0, y0, x1, y1, Colors::Green);
 }
